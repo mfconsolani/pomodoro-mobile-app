@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import { Focus } from './src/features/focus/Focus';
 import { stylePatterns } from './src/utils/stylesPatterns';
-import { Timer } from './src/features/timer/Timer'
+import { Timer } from './src/features/timer/Timer';
 
 
 export default function App() {

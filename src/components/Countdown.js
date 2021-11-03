@@ -6,9 +6,11 @@ const minutesToMillis = (min) => min * 1000 * 60;
 const formatTime = (time) => time < 10 ? `0${time}` : time;
 
 export const Countdown = ({
-  minutes = 20,
+  minutes = 2,
   isPaused,
+  onProgress
 }) => {
+  const [millis, setMillis] = useState(minutesToMillis(minutes));
   const interval = React.useRef(null);
   const countDown = () => {
     setMillis(time => {
@@ -25,10 +27,11 @@ export const Countdown = ({
       return;
     }
     interval.current = setInterval(countDown, 1000);
-    return () => clearInterval(interval.current);
-  }, [isPaused]);
+    onProgress(millis/minutesToMillis(minutes));
 
-  const [millis, setMillis] = useState(minutesToMillis(minutes));
+    return () => clearInterval(interval.current);
+  }, [isPaused, millis]);
+
 
   const minute = Math.floor(millis / 1000 / 60) % 60;
   const seconds = Math.floor(millis / 1000) % 60;
@@ -41,7 +44,7 @@ export const Countdown = ({
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: stylePatterns.fontSizes.xl,
+    fontSize: stylePatterns.fontSizes.xxxl,
     fontWeight: "bold",
     color: stylePatterns.color.white,
     padding: stylePatterns.paddingSizes.lg,
