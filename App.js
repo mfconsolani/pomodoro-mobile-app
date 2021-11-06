@@ -20,7 +20,7 @@ export default function App() {
       />
       : <Focus addSubject={setFocusSubject}/>
       }
-      <StatusBar style="light" />
+      <StatusBar style="auto" />
     </View>
   );
 }
