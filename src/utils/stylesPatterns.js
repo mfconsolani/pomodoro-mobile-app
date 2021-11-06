@@ -25,6 +25,7 @@ export const stylePatterns = {
   },
   color: {
     darkBlue: "#252250",
-    white: "#fff"
+    white: "#fff",
+    violet: "rgb(107,21,170)"
   }
 };
