@@ -6,7 +6,7 @@ import { stylePatterns } from '../../utils/stylesPatterns';
 
 
 export const Focus = ({addSubject}) => {
-  const [tmpItem, setTmpItem] = useState(null);
+  const [subject, setSubject] = useState(null);
   return (
     <View style={styles.container}>
       <View style={styles.titleContaner}>
@@ -14,8 +14,8 @@ export const Focus = ({addSubject}) => {
         <View style={styles.inputContainer}>
           <TextInput 
           style={styles.textInput} 
-          onSubmitEditing={({nativeEvent}) => setTmpItem(nativeEvent.text)} />
-          <RoundedButton title="+" size={50} onPress={() => addSubject(tmpItem)} />
+          onSubmitEditing={({nativeEvent}) => setSubject(nativeEvent.text)} />
+          <RoundedButton title="+" size={50} onPress={() => addSubject(subject)} />
         </View>
       </View>
     </View>
