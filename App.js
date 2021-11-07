@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
@@ -8,19 +8,27 @@ import { Timer } from './src/features/timer/Timer';
 
 
 export default function App() {
-  const [ focusSubject, setFocusSubject ] = useState('gardening');
+  const [ focusSubject, setFocusSubject ] = useState('');
+  const [ focusHistory, setFocusHistory ] = useState([]);
+
+  useEffect(() => {
+    if (focusSubject){
+      setFocusHistory([...focusHistory, focusSubject]);
+    }
+
+  }, [focusSubject]);
+
   return (
     <View style={styles.container}>
       {focusSubject 
       ? <Timer 
       focusSubject={focusSubject}
-      onTimerEnd={() => {
-        setFocusSubject('');
-      }}
+      onTimerEnd={() => setFocusSubject(null)}
+      clearSubject={() => setFocusSubject(null)}
       />
       : <Focus addSubject={setFocusSubject}/>
       }
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </View>
   );
 }
