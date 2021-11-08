@@ -6,25 +6,34 @@ import { Focus } from './src/features/focus/Focus';
 import { stylePatterns } from './src/utils/stylesPatterns';
 import { Timer } from './src/features/timer/Timer';
 
+const STATUSES = {
+  COMPLETE: 1,
+  CANCELLED: 2
+};
 
 export default function App() {
   const [ focusSubject, setFocusSubject ] = useState('');
-  const [ focusHistory, setFocusHistory ] = useState([]);
+  const [ focusHistory, setFocusHistory ] = useState([]); 
 
-  useEffect(() => {
-    if (focusSubject){
-      setFocusHistory([...focusHistory, focusSubject]);
-    }
+  const addFocusHistorySubjectWithState = (subject, status) => {
+    setFocusHistory([...focusHistory, {subject, status}]);
+  };
 
-  }, [focusSubject]);
+  console.log(focusHistory);
 
   return (
     <View style={styles.container}>
       {focusSubject 
       ? <Timer 
       focusSubject={focusSubject}
-      onTimerEnd={() => setFocusSubject(null)}
-      clearSubject={() => setFocusSubject(null)}
+      onTimerEnd={() => {
+        addFocusHistorySubjectWithState(focusSubject,STATUSES.COMPLETE);
+        setFocusSubject(null);
+      }}
+      clearSubject={() => {
+        addFocusHistorySubjectWithState(focusSubject,STATUSES.CANCELLED);
+        setFocusSubject(null);
+      }}
       />
       : <Focus addSubject={setFocusSubject}/>
       }
