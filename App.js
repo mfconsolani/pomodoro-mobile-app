@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import Constants from 'expo-constants';
 import { Focus } from './src/features/focus/Focus';
+import { FocusHistory } from './src/features/focus/FocusHistory';
 import { stylePatterns } from './src/utils/stylesPatterns';
 import { Timer } from './src/features/timer/Timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STATUSES = {
   COMPLETE: 1,
@@ -19,10 +21,40 @@ export default function App() {
     setFocusHistory([...focusHistory, {subject, status}]);
   };
 
-  console.log(focusHistory);
+  const saveFocusHistory = async () => {
+    try {
+      await AsyncStorage.setItem("focusHistory", JSON.stringify(focusHistory));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClear = () => {
+    setFocusHistory([]);
+  };
+
+  const loadFocusHistory = async () => {
+    try {
+      const history = await AsyncStorage.getItem("focusHistory");
+      if (history && JSON.parse(history).length) {
+        setFocusHistory(JSON.parse(history));
+      }
+    } catch (e){
+      console.log(e);
+    }
+  };
+
+  useEffect(()=> {
+    loadFocusHistory();
+  }, []);
+
+  useEffect(()=> {
+    saveFocusHistory();
+  }, [focusHistory]);
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       {focusSubject 
       ? <Timer 
       focusSubject={focusSubject}
@@ -35,9 +67,12 @@ export default function App() {
         setFocusSubject(null);
       }}
       />
-      : <Focus addSubject={setFocusSubject}/>
+      : 
+      (<>
+        <Focus addSubject={setFocusSubject}/>
+        <FocusHistory focusHistory={focusHistory} onClear={onClear}/>
+      </>)
       }
-      <StatusBar style="light" />
     </View>
   );
 }
