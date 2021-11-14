@@ -17,8 +17,8 @@ export default function App() {
   const [ focusSubject, setFocusSubject ] = useState('');
   const [ focusHistory, setFocusHistory ] = useState([]); 
 
-  const addFocusHistorySubjectWithState = (subject, status) => {
-    setFocusHistory([...focusHistory, {subject, status}]);
+  const addFocusHistorySubjectWithStatus = (subject, status) => {
+    setFocusHistory([...focusHistory, {key: String(focusHistory.length + 1), subject, status}]);
   };
 
   const saveFocusHistory = async () => {
@@ -59,11 +59,11 @@ export default function App() {
       ? <Timer 
       focusSubject={focusSubject}
       onTimerEnd={() => {
-        addFocusHistorySubjectWithState(focusSubject,STATUSES.COMPLETE);
+        addFocusHistorySubjectWithStatus(focusSubject,STATUSES.COMPLETE);
         setFocusSubject(null);
       }}
       clearSubject={() => {
-        addFocusHistorySubjectWithState(focusSubject,STATUSES.CANCELLED);
+        addFocusHistorySubjectWithStatus(focusSubject,STATUSES.CANCELLED);
         setFocusSubject(null);
       }}
       />

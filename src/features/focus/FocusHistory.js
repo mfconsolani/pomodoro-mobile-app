@@ -4,7 +4,6 @@ import { stylePatterns } from '../../utils/stylesPatterns';
 import { RoundedButton } from '../../components/RoundedButton';
 
 export const HistoryItem = ({ item }) => {
-  // console.log(index)
   return (
     <Text style={historyItem(item.status)}>
       {item.subject}
@@ -27,7 +26,6 @@ export const FocusHistory = ({ focusHistory, onClear }) => {
               contentContainerStyle={{ alignItems: 'center' }}
               data={focusHistory}
               renderItem={HistoryItem}
-              keyExtractor={item => item.index}
             />
             <View style={styles.clearContainer}>
               <RoundedButton size={75} title="Clear" onPress={() => onClear()} />
