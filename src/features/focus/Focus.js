@@ -6,16 +6,16 @@ import { stylePatterns } from '../../utils/stylesPatterns';
 
 
 export const Focus = ({addSubject}) => {
-  const [tmpItem, setTmpItem] = useState(null);
+  const [subject, setSubject] = useState(null);
   return (
     <View style={styles.container}>
-      <View style={styles.titleContaner}>
+      <View style={styles.innerContainer}>
         <Text style={styles.title}>What would you like to focus on?</Text>
         <View style={styles.inputContainer}>
           <TextInput 
           style={styles.textInput} 
-          onSubmitEditing={({nativeEvent}) => setTmpItem(nativeEvent.text)} />
-          <RoundedButton title="+" size={50} onPress={() => addSubject(tmpItem)} />
+          onSubmitEditing={({nativeEvent}) => setSubject(nativeEvent.text)} />
+          <RoundedButton title="+" size={50} onPress={() => addSubject(subject)} />
         </View>
       </View>
     </View>
@@ -24,10 +24,10 @@ export const Focus = ({addSubject}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  titleContaner: {
     flex: 0.5,
+  },
+  innerContainer: {
+    flex: 1,
     padding: stylePatterns.paddingSizes.md,
     justifyContent: "center"
   },

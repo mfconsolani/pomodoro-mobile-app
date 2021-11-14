@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { stylePatterns } from '../utils/stylesPatterns';
 
 const minutesToMillis = (min) => min * 1000 * 60;
 const formatTime = (time) => time < 10 ? `0${time}` : time;
 
 export const Countdown = ({
-  minutes = 20,
+  minutes = 2,
   isPaused,
+  onProgress,
+  onEnd
 }) => {
+  const [millis, setMillis] = useState(null);
   const interval = React.useRef(null);
+  const minute = Math.floor(millis / 1000 / 60) % 60;
+  const seconds = Math.floor(millis / 1000) % 60;
+  
   const countDown = () => {
     setMillis(time => {
       if (time === 0) {
+        clearInterval(interval.current);
         return time;
       }
       const timeLeft = time - 1000;
@@ -20,28 +27,34 @@ export const Countdown = ({
     });
   };
 
+  useEffect(()=> {
+    setMillis(minutesToMillis(minutes));
+  }, [minutes]);
+
   useEffect(() => {
     if (isPaused){
+      if(interval.current) clearInterval(interval.current);
       return;
     }
     interval.current = setInterval(countDown, 1000);
     return () => clearInterval(interval.current);
   }, [isPaused]);
 
-  const [millis, setMillis] = useState(minutesToMillis(minutes));
+  useEffect(() => {
+    onProgress(millis/minutesToMillis(minutes));
+    if (millis === 0){
+      onEnd();
+    } 
+  }, [millis]);
 
-  const minute = Math.floor(millis / 1000 / 60) % 60;
-  const seconds = Math.floor(millis / 1000) % 60;
   return (
-    // <View style={styles.container}>
     <Text style={styles.text}>{formatTime(minute)}:{formatTime(seconds)}</Text>
-    // </View>
   );
 };
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: stylePatterns.fontSizes.xl,
+    fontSize: stylePatterns.fontSizes.xxxl,
     fontWeight: "bold",
     color: stylePatterns.color.white,
     padding: stylePatterns.paddingSizes.lg,
